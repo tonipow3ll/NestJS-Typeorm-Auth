@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { User } from './users/user.entity';
+import { UsersModule } from './users/user.module';
 
 require('dotenv').config();
 
@@ -20,6 +21,7 @@ require('dotenv').config();
       // update this
       synchronize: true
     }),
+    UsersModule,
     // ConfigModule.forRoot()
   ],
   controllers: [AppController],

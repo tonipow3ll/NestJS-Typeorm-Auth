@@ -18,8 +18,8 @@ require('dotenv').config();
       password: process.env.DB_PASSWORD,
       database: process.env.DATABASE,
       entities:[User],
-      // update this
-      synchronize: true
+      // synchronize: true
+      autoLoadEntities: true,
     }),
     UsersModule,
     // ConfigModule.forRoot()

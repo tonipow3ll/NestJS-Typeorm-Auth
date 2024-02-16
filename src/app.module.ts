@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { User } from './users/user.entity';
 import { UsersModule } from './users/user.module';
+import { AuthModule } from './auth/auth.module';
 
 require('dotenv').config();
 
@@ -22,6 +23,7 @@ require('dotenv').config();
       autoLoadEntities: true,
     }),
     UsersModule,
+    AuthModule,
     // ConfigModule.forRoot()
   ],
   controllers: [AppController],

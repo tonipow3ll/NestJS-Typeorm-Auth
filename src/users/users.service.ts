@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserParams } from 'src/interfaces/user.params';
 import { Repository } from 'typeorm';
@@ -25,8 +25,12 @@ export class UsersService {
   }
 
   async create(user: UserParams) {
-    const newUser = this.usersRepository.create({ ...user });
-    return this.usersRepository.save(newUser)
+    const foundUser = await this.usersRepository.findOneBy({ email: user.email });
+    if (!foundUser) {
+      const newUser = this.usersRepository.create({ ...user });
+      return this.usersRepository.save(newUser);
+    }
+    else throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
   }
 
   async update(id: number, updatedUserDetails: UserParams) {

@@ -33,6 +33,7 @@ export class UsersService {
     const foundUser = await this.usersRepository.findOneBy({ email: user.email });
     if (!foundUser) {
 
+      // TODO - add salt
       const saltOrRounds = 10;
       const hash = await bcrypt.hash(user.password, saltOrRounds)
       const newUser = this.usersRepository.create({ ...user, password: hash });

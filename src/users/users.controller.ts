@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Put, Body, Param, ParseIntPipe, Patch, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Put, Body, Param, ParseIntPipe, Patch, Delete, UseGuards } from '@nestjs/common';
 import { CreateUserDto } from 'src/interfaces/dto';
 import { IUser } from 'src/interfaces/user';
 import { UsersService } from './users.service';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('users')
 // handles incoming req's / outbound responses
@@ -13,10 +14,14 @@ export class UsersController {
   async findAllUsers(): Promise<IUser[]> {
     return await this.userService.findAll()
   }
+
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findOne(@Param('id') id): Promise<IUser> {
     return await this.userService.findOne(id)
   }
+
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() createUserDto: CreateUserDto): Promise<IUser> {
     console.log('creating!')

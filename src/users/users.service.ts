@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserParams } from 'src/interfaces/user.params';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
+import * as bcrypt from 'bcrypt';
 
 // business logic
 @Injectable()
@@ -31,7 +32,10 @@ export class UsersService {
   async create(user: UserParams) {
     const foundUser = await this.usersRepository.findOneBy({ email: user.email });
     if (!foundUser) {
-      const newUser = this.usersRepository.create({ ...user });
+
+      const saltOrRounds = 10;
+      const hash = await bcrypt.hash(user.password, saltOrRounds)
+      const newUser = this.usersRepository.create({ ...user, password: hash });
       return this.usersRepository.save(newUser);
     }
     else throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);

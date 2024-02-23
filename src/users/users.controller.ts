@@ -15,7 +15,6 @@ export class UsersController {
     return await this.userService.findAll()
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findOne(@Param('id') id): Promise<IUser> {
     return await this.userService.findOne(id)
@@ -28,11 +27,13 @@ export class UsersController {
     return await this.userService.create(createUserDto)
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async update(@Body() updateUserDto: CreateUserDto, @Param('id', ParseIntPipe) id: number) {
     await this.userService.update(id, updateUserDto)
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async delete(@Param('id', ParseIntPipe) id: number) {
     await this.userService.delete(id);

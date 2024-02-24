@@ -4,6 +4,8 @@ import { UserParams } from 'src/interfaces/user.params';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import * as bcrypt from 'bcrypt';
+import { CreateUserDto } from 'src/interfaces/create-user.dto';
+import { UpdateUserDto } from 'src/interfaces/update-user.dto';
 
 // business logic
 @Injectable()
@@ -29,7 +31,7 @@ export class UsersService {
     await this.usersRepository.delete(id);
   }
 
-  async create(user: UserParams) {
+  async create(user: CreateUserDto) {
     const foundUser = await this.usersRepository.findOneBy({ email: user.email });
     if (!foundUser) {
 
@@ -42,7 +44,7 @@ export class UsersService {
     else throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
   }
 
-  async update(id: number, updatedUserDetails: UserParams) {
+  async update(id: number, updatedUserDetails: UpdateUserDto) {
     return this.usersRepository.update({ id }, { ...updatedUserDetails });
   }
 

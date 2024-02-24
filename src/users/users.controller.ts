@@ -1,8 +1,9 @@
 import { Controller, Get, Post, Put, Body, Param, ParseIntPipe, Patch, Delete, UseGuards } from '@nestjs/common';
-import { CreateUserDto } from 'src/interfaces/dto';
+import { CreateUserDto } from 'src/interfaces/create-user.dto';
 import { IUser } from 'src/interfaces/user';
 import { UsersService } from './users.service';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { UpdateUserDto } from 'src/interfaces/update-user.dto';
 
 @Controller('users')
 // handles incoming req's / outbound responses
@@ -15,12 +16,13 @@ export class UsersController {
     return await this.userService.findAll()
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findOne(@Param('id') id): Promise<IUser> {
     return await this.userService.findOne(id)
   }
 
-  @UseGuards(JwtAuthGuard)
+  // signup
   @Post()
   async create(@Body() createUserDto: CreateUserDto): Promise<IUser> {
     console.log('creating!')
@@ -29,7 +31,7 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  async update(@Body() updateUserDto: CreateUserDto, @Param('id', ParseIntPipe) id: number) {
+  async update(@Body() updateUserDto: UpdateUserDto, @Param('id', ParseIntPipe) id: number) {
     await this.userService.update(id, updateUserDto)
   }
 

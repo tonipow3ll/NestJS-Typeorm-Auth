@@ -24,7 +24,7 @@ export class UsersService {
   }
 
   findByEmail(email: string): Promise<User> {
-    return this.usersRepository.findOneBy({ email });
+    return this.usersRepository.findOneOrFail({ where: { email }, select: ['email', 'id', 'password'] });
   }
 
   async remove(id: string): Promise<void> {

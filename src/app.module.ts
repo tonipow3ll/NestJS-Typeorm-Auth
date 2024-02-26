@@ -19,12 +19,10 @@ require('dotenv').config();
       password: process.env.DB_PASSWORD,
       database: process.env.DATABASE,
       entities:[User],
-      // synchronize: true
       autoLoadEntities: true,
     }),
     UsersModule,
     AuthModule,
-    // ConfigModule.forRoot()
   ],
   controllers: [AppController],
   providers: [AppService],

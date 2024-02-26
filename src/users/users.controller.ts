@@ -22,10 +22,8 @@ export class UsersController {
     return await this.userService.findOne(id)
   }
 
-  // signup
   @Post()
   async create(@Body() createUserDto: CreateUserDto): Promise<IUser> {
-    console.log('creating!')
     return await this.userService.create(createUserDto)
   }
 
